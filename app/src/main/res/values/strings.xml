@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">Trending Times Jetpack</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="news_placeholder">This is the news</string>
+    <string name="back">back</string>
+    <string name="feedback">Feedback</string>
+    <string name="have_feedback_for_us_submit_here">Have feedback for us? Submit here.</string>
+    <string name="log_out">Log Out</string>
+    <string name="login">Login</string>
+    <string name="or_continue_with">Or Continue With</string>
+    <string name="change_password">Change password</string>
+    <string name="enter_old_password">Enter old password</string>
+    <string name="enter_new_password">Enter new password</string>
+    <string name="confirm_new_password">Confirm new password</string>
+    <string name="continue_as_a_guest">Continue as a guest</string>
+    <string name="empty_string"> </string>
+    <string name="enter_your_email">Enter Your Email</string>
+    <string name="enter_your_password">Enter Your Password</string>
+    <string name="icon_password_visible">Password Visible</string>
+    <string name="icon_password_hidden">Password Hidden</string>
+    <string name="login_error_msg_empty_email_mobile">Email field cannot be empty</string>
+    <string name="login_error_msg_empty_password">Password Field Cannot Be Empty</string>
+    <color name="Lavender">#8692f7</color>
+
 </resources>
