@@ -101,8 +101,7 @@ fun LoginScreen(
                         )
                         AccountRow(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 8.dp, vertical = 6.dp),
+                                .fillMaxWidth(),
                         )
                         Text(
                             stringResource(id = R.string.or_continue_with),
