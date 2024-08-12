@@ -1,4 +1,4 @@
-package com.example.trendingtimesjetpack.auth.presentation.components
+package com.example.trendingtimesjetpack.presentation.auth.components
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons

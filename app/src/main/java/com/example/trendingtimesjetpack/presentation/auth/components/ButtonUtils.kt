@@ -1,4 +1,4 @@
-package com.example.trendingtimesjetpack.auth.presentation.components
+package com.example.trendingtimesjetpack.presentation.auth.components
 
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton

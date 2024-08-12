@@ -1,4 +1,4 @@
-package com.example.trendingtimesjetpack.auth.presentation.screen.login.components
+package com.example.trendingtimesjetpack.presentation.auth.screen.login.components
 
 
 import LoginState
@@ -11,8 +11,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import com.example.trendingtimesjetpack.R
-import com.example.trendingtimesjetpack.auth.presentation.components.AuthTextField
-import com.example.trendingtimesjetpack.auth.presentation.components.PasswordTextField
+import com.example.trendingtimesjetpack.presentation.auth.components.AuthTextField
+import com.example.trendingtimesjetpack.presentation.auth.components.PasswordTextField
 
 @Composable
 fun EmailTextField(

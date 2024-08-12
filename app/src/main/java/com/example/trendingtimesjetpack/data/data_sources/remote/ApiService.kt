@@ -1,4 +1,4 @@
-package com.example.trendingtimesjetpack.auth.data.datasources.remote
+package com.example.trendingtimesjetpack.data.data_sources.remote
 
 import com.example.trendingtimesjetpack.core.utils.Resource
 

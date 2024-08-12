@@ -1,4 +1,4 @@
-package com.example.trendingtimesjetpack.auth.presentation.screen.login.components
+package com.example.trendingtimesjetpack.presentation.auth.screen.login.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

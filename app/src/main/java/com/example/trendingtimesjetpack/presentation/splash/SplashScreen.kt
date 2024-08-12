@@ -1,4 +1,4 @@
-package com.example.trendingtimesjetpack.auth.presentation.splash
+package com.example.trendingtimesjetpack.presentation.splash
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

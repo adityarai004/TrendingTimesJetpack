@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.trendingtimesjetpack.auth.presentation.screen.login.LoginScreen
-import com.example.trendingtimesjetpack.auth.presentation.splash.SplashScreen
+import com.example.trendingtimesjetpack.presentation.auth.screen.login.LoginScreen
+import com.example.trendingtimesjetpack.presentation.splash.SplashScreen
 
 @Composable
 fun NavGraph(navHostController: NavHostController) {

@@ -1,4 +1,4 @@
-package com.example.trendingtimesjetpack.auth.presentation.components
+package com.example.trendingtimesjetpack.presentation.auth.components
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text

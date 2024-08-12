@@ -1,4 +1,4 @@
-package com.example.trendingtimesjetpack.auth.presentation.screen.login
+package com.example.trendingtimesjetpack.presentation.auth.screen.login
 
 import LoginUiEvent
 import android.widget.Toast
@@ -33,13 +33,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trendingtimesjetpack.R
-import com.example.trendingtimesjetpack.auth.presentation.components.CustomButton
-import com.example.trendingtimesjetpack.auth.presentation.components.LargeTitleText
-import com.example.trendingtimesjetpack.auth.presentation.components.MediumTitleText
-import com.example.trendingtimesjetpack.auth.presentation.screen.login.components.AccountRow
-import com.example.trendingtimesjetpack.auth.presentation.screen.login.components.EmailTextField
-import com.example.trendingtimesjetpack.auth.presentation.screen.login.components.PasswordTextField
-import com.example.trendingtimesjetpack.auth.presentation.screen.login.components.ThirdPartyLoginRow
+import com.example.trendingtimesjetpack.presentation.auth.components.CustomButton
+import com.example.trendingtimesjetpack.presentation.auth.components.LargeTitleText
+import com.example.trendingtimesjetpack.presentation.auth.components.MediumTitleText
+import com.example.trendingtimesjetpack.presentation.auth.screen.login.components.AccountRow
+import com.example.trendingtimesjetpack.presentation.auth.screen.login.components.EmailTextField
+import com.example.trendingtimesjetpack.presentation.auth.screen.login.components.PasswordTextField
+import com.example.trendingtimesjetpack.presentation.auth.screen.login.components.ThirdPartyLoginRow
 
 
 @Composable

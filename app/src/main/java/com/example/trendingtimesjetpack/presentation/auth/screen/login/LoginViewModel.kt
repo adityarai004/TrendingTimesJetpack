@@ -1,4 +1,4 @@
-package com.example.trendingtimesjetpack.auth.presentation.screen.login
+package com.example.trendingtimesjetpack.presentation.auth.screen.login
 
 import LoginErrorState
 import LoginState
