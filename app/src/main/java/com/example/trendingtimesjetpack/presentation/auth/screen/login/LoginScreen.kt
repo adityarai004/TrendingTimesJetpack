@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trendingtimesjetpack.R
 import com.example.trendingtimesjetpack.presentation.auth.components.CustomButton
@@ -44,7 +45,7 @@ import com.example.trendingtimesjetpack.presentation.auth.screen.login.component
 
 @Composable
 fun LoginScreen(
-    loginViewModel: LoginViewModel = viewModel(),
+    loginViewModel: LoginViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val loginState by remember {
@@ -52,6 +53,10 @@ fun LoginScreen(
     }
     if (loginState.isLoginError) {
         Toast.makeText(context, loginState.loginErrorString, Toast.LENGTH_LONG).show()
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        loginViewModel.callLogin()
     }
     Box(modifier = Modifier.fillMaxSize()) {
         if (loginState.isLoginSuccessful) {

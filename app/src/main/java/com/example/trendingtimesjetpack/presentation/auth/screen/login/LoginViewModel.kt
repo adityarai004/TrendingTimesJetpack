@@ -3,20 +3,39 @@ package com.example.trendingtimesjetpack.presentation.auth.screen.login
 import LoginErrorState
 import LoginState
 import LoginUiEvent
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trendingtimesjetpack.core.ui.ErrorState
+import com.example.trendingtimesjetpack.core.utils.Resource
+import com.example.trendingtimesjetpack.data.dto.auth.LoginResponseDTO
+import com.example.trendingtimesjetpack.domain.use_cases.LoginUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import emailOrMobileEmptyErrorState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import passwordEmptyErrorState
+import javax.inject.Inject
 
 
-//@HiltViewModel
-class LoginViewModel : ViewModel() {
+@HiltViewModel
+class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase) : ViewModel() {
     var loginState = mutableStateOf(LoginState())
         private set
+
+    suspend fun callLogin() {
+        viewModelScope.launch(Dispatchers.IO) {
+            loginUseCase
+                .invoke("example2@gmail.com", "123456").collect {
+                    when (it) {
+                        is Resource.Error -> Log.i("masti", "Error hua ji ${it.message}")
+                        Resource.Loading -> Log.i("masti", " Loading")
+                        is Resource.Success -> Log.i("masti", " lkdjsflkasjd ${it.data}")
+                    }
+                }
+        }
+    }
 
     fun onUiEvent(loginUiEvent: LoginUiEvent) {
         when (loginUiEvent) {

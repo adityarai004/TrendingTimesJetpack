@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "com.example.trendingtimesjetpack"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.trendingtimesjetpack"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -86,6 +86,7 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.cio)
 
+    implementation(libs.androidx.hilt.navigation.compose)
 }
 
 kapt {

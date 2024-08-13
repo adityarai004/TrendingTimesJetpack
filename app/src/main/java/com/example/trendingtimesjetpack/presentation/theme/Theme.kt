@@ -1,4 +1,4 @@
-package com.example.trendingtimesjetpack.ui.theme
+package com.example.trendingtimesjetpack.presentation.theme
 
 import android.app.Activity
 import android.os.Build

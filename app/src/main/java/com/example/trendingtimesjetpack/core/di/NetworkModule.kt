@@ -1,6 +1,7 @@
 package com.example.trendingtimesjetpack.core.di
 
 import android.util.Log
+import com.example.trendingtimesjetpack.core.networking.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,7 +28,7 @@ object NetworkModule {
     private const val TIMEOUT = 10_000
 
     @Provides
-    fun providerHttpClient(): HttpClient {
+    fun provideHttpClient(): HttpClient {
         return HttpClient(CIO) {
             install(ContentNegotiation) {
                 json(Json {
@@ -59,5 +60,10 @@ object NetworkModule {
                 requestTimeout = TIMEOUT.toLong()
             }
         }
+    }
+
+    @Provides
+    fun provideApiService(client: HttpClient): ApiService{
+        return ApiService(client)
     }
 }
