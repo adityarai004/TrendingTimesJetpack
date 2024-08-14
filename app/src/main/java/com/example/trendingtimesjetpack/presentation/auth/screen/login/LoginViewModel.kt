@@ -1,21 +1,22 @@
 package com.example.trendingtimesjetpack.presentation.auth.screen.login
 
-import LoginErrorState
-import LoginState
+import com.example.trendingtimesjetpack.presentation.auth.screen.login.state.LoginErrorState
+import com.example.trendingtimesjetpack.presentation.auth.screen.login.state.LoginState
 import LoginUiEvent
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.trendingtimesjetpack.core.constants.RegexConstants
 import com.example.trendingtimesjetpack.core.ui.ErrorState
 import com.example.trendingtimesjetpack.core.utils.Resource
-import com.example.trendingtimesjetpack.data.dto.auth.LoginResponseDTO
 import com.example.trendingtimesjetpack.domain.use_cases.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import emailOrMobileEmptyErrorState
+import com.example.trendingtimesjetpack.presentation.auth.screen.login.state.emailEmptyErrorState
+import com.example.trendingtimesjetpack.presentation.auth.screen.login.state.invalidEmailErrorState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import passwordEmptyErrorState
+import com.example.trendingtimesjetpack.presentation.auth.screen.login.state.passwordEmptyErrorState
 import javax.inject.Inject
 
 
@@ -24,17 +25,8 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
     var loginState = mutableStateOf(LoginState())
         private set
 
-    suspend fun callLogin() {
-        viewModelScope.launch(Dispatchers.IO) {
-            loginUseCase
-                .invoke("example2@gmail.com", "123456").collect {
-                    when (it) {
-                        is Resource.Error -> Log.i("masti", "Error hua ji ${it.message}")
-                        Resource.Loading -> Log.i("masti", " Loading")
-                        is Resource.Success -> Log.i("masti", " lkdjsflkasjd ${it.data}")
-                    }
-                }
-        }
+    fun resetLoginError() {
+        loginState.value = loginState.value.copy(isLoginError = false)
     }
 
     fun onUiEvent(loginUiEvent: LoginUiEvent) {
@@ -43,10 +35,12 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
                 loginState.value = loginState.value.copy(
                     email = loginUiEvent.inputValue,
                     errorState = loginState.value.errorState.copy(
-                        emailOrMobileErrorState = if (loginUiEvent.inputValue.trim().isNotEmpty())
-                            ErrorState()
+                        emailOrMobileErrorState = if (loginUiEvent.inputValue.trim().isEmpty())
+                            emailEmptyErrorState
+                        else if (!loginUiEvent.inputValue.matches(Regex(RegexConstants.EMAIL_REGEX)))
+                            invalidEmailErrorState
                         else
-                            emailOrMobileEmptyErrorState
+                            ErrorState()
                     )
                 )
             }
@@ -63,39 +57,57 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
                 )
             }
 
-            is LoginUiEvent.Submit -> {
-                val email = loginState.value.email
-                val password = loginState.value.password
-                val inputsValidated = validateInput(email, password)
-                loginState.value = loginState.value.copy(
-                    loginInProgress = true,
-                    isLoginError = true,
-                    loginErrorString = "Something Went Wrong"
-                )
+            is LoginUiEvent.Submit -> handleSubmitButton()
 
-                if (inputsValidated) {
-                    viewModelScope.launch(Dispatchers.IO) {
-//                        loginUseCase.invoke(AuthDTO(email,password)).collect{it ->
-//                            when(it){
-//                                is Resource.Failure -> {
-//                                    loginState.value = loginState.value.copy(loginInProgress = false, isLoginError = true, loginErrorString = it.error ?: "Something Went Wrong")
-//
-//                                }
-//                                is Resource.Loading -> {
-//                                    loginState.value = loginState.value.copy(loginInProgress = true)
-//
-//                                }
-//                                is Resource.Success -> {
-//                                    loginState.value = loginState.value.copy(loginInProgress = false)
-//
-//                                }
-//                            }
-//                        }
+            else -> {}
+        }
+    }
+
+    private fun handleSubmitButton() {
+        val email = loginState.value.email
+        val password = loginState.value.password
+        val inputsValidated = validateInput(email, password)
+
+        if (inputsValidated) {
+            callLoginApi(email, password)
+        }
+    }
+
+    private fun callLoginApi(email: String, password: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            loginUseCase.invoke(email, password).collect {
+                when (it) {
+                    is Resource.Error -> {
+                        loginState.value = loginState.value.copy(
+                            loginInProgress = false,
+                            isLoginError = true,
+                            loginErrorString = it.message
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        loginState.value = loginState.value.copy(loginInProgress = true)
+                    }
+
+                    is Resource.Success -> {
+                        if (it.data.success) {
+                            loginState.value = loginState.value.copy(
+                                loginInProgress = false,
+                                isLoginError = false,
+                                loginErrorString = "",
+                                isLoginSuccessful = true
+                            )
+                        } else {
+                            loginState.value = loginState.value.copy(
+                                loginInProgress = false,
+                                isLoginError = true,
+                                loginErrorString = it.data.message,
+                                isLoginSuccessful = false
+                            )
+                        }
                     }
                 }
             }
-
-            else -> {}
         }
     }
 
@@ -104,7 +116,7 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
             email.isEmpty() -> {
                 loginState.value = loginState.value.copy(
                     errorState = LoginErrorState(
-                        emailOrMobileErrorState = emailOrMobileEmptyErrorState
+                        emailOrMobileErrorState = emailEmptyErrorState
                     )
                 )
                 false
@@ -126,9 +138,5 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
                 true
             }
         }
-    }
-
-    init {
-
     }
 }

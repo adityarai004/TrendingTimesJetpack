@@ -8,5 +8,5 @@ data class LoginResponseDTO(
     @SerialName("success")
     val success: Boolean,
     @SerialName("message")
-    val token: String,
+    val message: String,
 )

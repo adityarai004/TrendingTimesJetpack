@@ -1,3 +1,5 @@
+package com.example.trendingtimesjetpack.presentation.auth.screen.login.state
+
 import com.example.trendingtimesjetpack.core.ui.ErrorState
 
 data class LoginState(

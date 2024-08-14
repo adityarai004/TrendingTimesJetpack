@@ -101,6 +101,6 @@ fun PasswordTextField(
             if (isError) {
                 ErrorTextInputField(text = errorText)
             }
-        }
+        },
     )
 }

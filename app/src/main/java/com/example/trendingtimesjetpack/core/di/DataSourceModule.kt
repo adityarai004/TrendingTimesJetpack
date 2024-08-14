@@ -12,5 +12,6 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object DataSourceModule {
     @Provides
-    fun provideAuthDataSource(apiService: ApiService): AuthDataSource = AuthDataSourceImpl(apiService)
+    fun provideAuthDataSource(apiService: ApiService): AuthDataSource =
+        AuthDataSourceImpl(apiService)
 }

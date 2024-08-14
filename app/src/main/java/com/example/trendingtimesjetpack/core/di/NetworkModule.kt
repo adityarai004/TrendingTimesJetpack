@@ -1,6 +1,7 @@
 package com.example.trendingtimesjetpack.core.di
 
 import android.util.Log
+import com.example.trendingtimesjetpack.core.constants.NetworkConstants
 import com.example.trendingtimesjetpack.core.networking.ApiService
 import dagger.Module
 import dagger.Provides
@@ -30,6 +31,7 @@ object NetworkModule {
     @Provides
     fun provideHttpClient(): HttpClient {
         return HttpClient(CIO) {
+
             install(ContentNegotiation) {
                 json(Json {
                     prettyPrint = true
@@ -54,6 +56,7 @@ object NetworkModule {
 
             install(DefaultRequest){
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
+                url(NetworkConstants.BASE_URL)
             }
 
             engine {

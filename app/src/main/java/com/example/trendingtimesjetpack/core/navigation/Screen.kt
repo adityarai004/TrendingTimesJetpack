@@ -3,7 +3,7 @@ package com.example.trendingtimesjetpack.core.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-object Splash
+object Login
 
 @Serializable
-object Login
+object News

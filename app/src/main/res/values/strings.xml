@@ -21,7 +21,11 @@
     <string name="icon_password_visible">Password Visible</string>
     <string name="icon_password_hidden">Password Hidden</string>
     <string name="login_error_msg_empty_email_mobile">Email field cannot be empty</string>
+    <string name="invalid_email">Please enter a valid email</string>
+    <string name="please_login_with_credentials">Please login with your credentials</string>
     <string name="login_error_msg_empty_password">Password Field Cannot Be Empty</string>
+    <string name="welcome">Welcome</string>
     <color name="Lavender">#8692f7</color>
+
 
 </resources>
