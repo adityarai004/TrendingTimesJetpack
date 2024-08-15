@@ -59,25 +59,22 @@ fun LoginScreen(
     }
     val state = rememberScrollState()
     LaunchedEffect(key1 = loginState.isLoginError) {
-
         if (loginState.isLoginError) {
             Toast.makeText(context, loginState.loginErrorString, Toast.LENGTH_LONG).show()
         }
-
         loginViewModel.resetLoginError()
+    }
+    LaunchedEffect(key1 = loginState.isLoginSuccessful) {
+        if (loginState.isLoginSuccessful) {
+            onNavigateToNews()
+        }
     }
 
     Column(modifier = Modifier.verticalScroll(state)) {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            if (loginState.isLoginSuccessful) {
-                LaunchedEffect(key1 = Unit) {
-                    onNavigateToNews()
-                }
-            } else {
-                MainScreen(loginViewModel = loginViewModel, loginState = loginState)
-            }
+            MainScreen(loginViewModel = loginViewModel, loginState = loginState)
             if (loginState.loginInProgress) {
                 CircularProgressIndicator(
                     modifier = Modifier// Make it fill the entire screen

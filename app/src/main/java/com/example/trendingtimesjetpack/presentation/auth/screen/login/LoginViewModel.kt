@@ -7,10 +7,14 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.trendingtimesjetpack.core.constants.LocalPrefsConstants
 import com.example.trendingtimesjetpack.core.constants.RegexConstants
 import com.example.trendingtimesjetpack.core.ui.ErrorState
 import com.example.trendingtimesjetpack.core.utils.Resource
+import com.example.trendingtimesjetpack.domain.use_cases.GetBooleanUseCase
+import com.example.trendingtimesjetpack.domain.use_cases.GetUserAuthKeyUseCase
 import com.example.trendingtimesjetpack.domain.use_cases.LoginUseCase
+import com.example.trendingtimesjetpack.domain.use_cases.SetUserAuthTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import com.example.trendingtimesjetpack.presentation.auth.screen.login.state.emailEmptyErrorState
 import com.example.trendingtimesjetpack.presentation.auth.screen.login.state.invalidEmailErrorState
@@ -21,7 +25,12 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase) : ViewModel() {
+class LoginViewModel @Inject constructor(
+    private val loginUseCase: LoginUseCase,
+    private val setUserAuthTokenUseCase: SetUserAuthTokenUseCase,
+    private val getUserAuthKeyUseCase: GetUserAuthKeyUseCase,
+    private val getBooleanUseCase: GetBooleanUseCase
+) : ViewModel() {
     var loginState = mutableStateOf(LoginState())
         private set
 
@@ -91,6 +100,15 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
 
                     is Resource.Success -> {
                         if (it.data.success) {
+                            viewModelScope.launch(Dispatchers.IO) {
+                                setUserAuthTokenUseCase.invoke(it.data.message)
+                                Log.d(
+                                    "AUTH_HUA",
+                                    "Yeh Rha status ${getUserAuthKeyUseCase.invoke()} boolean bhi ${
+                                        getBooleanUseCase(LocalPrefsConstants.USER_IS_LOGGED_IN)
+                                    }"
+                                )
+                            }
                             loginState.value = loginState.value.copy(
                                 loginInProgress = false,
                                 isLoginError = false,

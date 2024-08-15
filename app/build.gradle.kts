@@ -87,6 +87,7 @@ dependencies {
     implementation(libs.ktor.client.cio)
 
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.datastore.preferences)
 }
 
 kapt {
