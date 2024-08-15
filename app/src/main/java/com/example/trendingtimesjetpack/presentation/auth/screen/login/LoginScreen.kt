@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +18,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,8 +26,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -70,17 +72,24 @@ fun LoginScreen(
         }
     }
 
-    Column(modifier = Modifier.verticalScroll(state)) {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            MainScreen(loginViewModel = loginViewModel, loginState = loginState)
+    Scaffold { innerPadding ->
+        Box(modifier = Modifier.padding(innerPadding)) {
+            Column(modifier = Modifier.verticalScroll(state)) {
+                MainScreen(loginViewModel = loginViewModel, loginState = loginState)
+            }
             if (loginState.loginInProgress) {
-                CircularProgressIndicator(
-                    modifier = Modifier// Make it fill the entire screen
-                        .alpha(0.5f) // Set a slight transparency overlay
-                        .align(Alignment.Center) // Center the progress bar
-                )
+                Box(
+                    Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.3f))
+                        .pointerInput(Unit) {}
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(24.dp)
+                    )
+                }
             }
         }
     }

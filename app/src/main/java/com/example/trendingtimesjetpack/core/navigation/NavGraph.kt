@@ -8,8 +8,8 @@ import com.example.trendingtimesjetpack.presentation.auth.screen.login.LoginScre
 import com.example.trendingtimesjetpack.presentation.news.screen.NewsScreen
 
 @Composable
-fun NavGraph(navHostController: NavHostController) {
-    NavHost(navController = navHostController, startDestination = Login){
+fun NavGraph(navHostController: NavHostController,startDestination: Any) {
+    NavHost(navController = navHostController, startDestination = startDestination){
         composable<Login> {
             LoginScreen(onNavigateToNews = {
                 navHostController.navigate(News){
