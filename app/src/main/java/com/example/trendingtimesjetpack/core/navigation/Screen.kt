@@ -3,7 +3,10 @@ package com.example.trendingtimesjetpack.core.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-object Login
+object LoginRoute
 
 @Serializable
-object News
+object NewsRoute
+
+@Serializable
+object SignUpRoute

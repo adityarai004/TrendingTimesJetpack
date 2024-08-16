@@ -10,16 +10,16 @@ import com.example.trendingtimesjetpack.presentation.news.screen.NewsScreen
 @Composable
 fun NavGraph(navHostController: NavHostController,startDestination: Any) {
     NavHost(navController = navHostController, startDestination = startDestination){
-        composable<Login> {
+        composable<LoginRoute> {
             LoginScreen(onNavigateToNews = {
-                navHostController.navigate(News){
+                navHostController.navigate(NewsRoute){
                     popUpTo(navHostController.graph.id){
                         inclusive = true
                     }
                 }
             })
         }
-        composable<News> {
+        composable<NewsRoute> {
             NewsScreen()
         }
     }

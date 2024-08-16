@@ -12,11 +12,11 @@ import com.example.trendingtimesjetpack.core.utils.Resource
 import com.example.trendingtimesjetpack.domain.use_cases.LoginUseCase
 import com.example.trendingtimesjetpack.domain.use_cases.SetUserAuthTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import com.example.trendingtimesjetpack.presentation.auth.screen.login.state.emailEmptyErrorState
-import com.example.trendingtimesjetpack.presentation.auth.screen.login.state.invalidEmailErrorState
+import com.example.trendingtimesjetpack.presentation.auth.emailEmptyErrorState
+import com.example.trendingtimesjetpack.presentation.auth.invalidEmailErrorState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import com.example.trendingtimesjetpack.presentation.auth.screen.login.state.passwordEmptyErrorState
+import com.example.trendingtimesjetpack.presentation.auth.passwordEmptyErrorState
 import javax.inject.Inject
 
 

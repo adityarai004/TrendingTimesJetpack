@@ -24,6 +24,12 @@
     <string name="invalid_email">Please enter a valid email</string>
     <string name="please_login_with_credentials">Please login with your credentials</string>
     <string name="login_error_msg_empty_password">Password Field Cannot Be Empty</string>
+    <string name="signup_error_msg_empty_gender">Please select a gender</string>
+    <string name="signup_error_msg_empty_dob">Please select a Date of Birth</string>
+    <string name="signup_error_msg_invalid_dob">Please select a valid Date Of Birth</string>
+    <string name="signup_error_msg_empty_name">Name field cannot be empty</string>
+    <string name="signup_invalid_msg_empty_name">Please enter a valid name</string>
+    <string name="signup_error_msg_mismatch_password">Password not matching</string>
     <string name="welcome">Welcome</string>
     <color name="Lavender">#8692f7</color>
 
