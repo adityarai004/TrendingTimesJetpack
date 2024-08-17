@@ -6,7 +6,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -53,7 +52,9 @@ import com.example.trendingtimesjetpack.presentation.auth.screen.login.state.Log
 @Composable
 fun LoginScreen(
     loginViewModel: LoginViewModel = hiltViewModel(),
-    onNavigateToNews: () -> Unit
+    onNavigateToNews: () -> Unit,
+    onNavigateToSignUp: () -> Unit,
+    onNavigateToForgotPassword: () -> Unit
 ) {
     val context = LocalContext.current
     val loginState by remember {
@@ -75,7 +76,22 @@ fun LoginScreen(
     Scaffold { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             Column(modifier = Modifier.verticalScroll(state)) {
-                MainScreen(loginViewModel = loginViewModel, loginState = loginState)
+                MainScreen(loginState = loginState, onEmailChange = { inputString ->
+                    loginViewModel.onUiEvent(
+                        loginUiEvent = LoginUiEvent.EmailChanged(
+                            inputString
+                        )
+                    )
+                },
+                    onPasswordChange = { inputString ->
+                        loginViewModel.onUiEvent(LoginUiEvent.PasswordChanged(inputValue = inputString))
+                    },
+                    onSubmit = {
+                        loginViewModel.onUiEvent(LoginUiEvent.Submit)
+                    },
+                    onSignUpClick = onNavigateToSignUp,
+                    onForgotPasswordClick = onNavigateToForgotPassword
+                )
             }
             if (loginState.loginInProgress) {
                 Box(
@@ -96,7 +112,14 @@ fun LoginScreen(
 }
 
 @Composable
-private fun MainScreen(loginViewModel: LoginViewModel, loginState: LoginState) {
+private fun MainScreen(
+    loginState: LoginState,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onSignUpClick: () -> Unit,
+    onForgotPasswordClick: () -> Unit,
+    onSubmit: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -120,13 +143,7 @@ private fun MainScreen(loginViewModel: LoginViewModel, loginState: LoginState) {
                 AuthTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = loginState.email,
-                    onValueChange = { inputString ->
-                        loginViewModel.onUiEvent(
-                            loginUiEvent = LoginUiEvent.EmailChanged(
-                                inputString
-                            )
-                        )
-                    },
+                    onValueChange = onEmailChange,
                     label = stringResource(id = R.string.enter_your_email),
                     keyboardOptions = KeyboardOptions
                         (
@@ -139,25 +156,24 @@ private fun MainScreen(loginViewModel: LoginViewModel, loginState: LoginState) {
                 PasswordTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = loginState.password,
-                    onValueChange = { inputString ->
-                        loginViewModel.onUiEvent(LoginUiEvent.PasswordChanged(inputValue = inputString))
-                    },
+                    onValueChange = onPasswordChange,
                     label = stringResource(id = R.string.enter_your_password),
                     keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password,
                         imeAction = ImeAction.Done
                     ),
                     errorText = stringResource(id = loginState.errorState.passwordErrorState.errorMessageStringResource),
                     isError = loginState.errorState.passwordErrorState.hasError
                 )
                 CustomButton(
-                    onClick = {
-                        loginViewModel.onUiEvent(LoginUiEvent.Submit)
-                    },
+                    onClick = onSubmit,
                     text = stringResource(id = R.string.login),
                     modifier = Modifier.fillMaxWidth()
                 )
                 AccountRow(
                     modifier = Modifier.fillMaxWidth(),
+                    onSignUpClick = onSignUpClick,
+                    onForgotPasswordClick = onForgotPasswordClick
                 )
                 Text(
                     stringResource(id = R.string.or_continue_with),
@@ -177,6 +193,6 @@ private fun MainScreen(loginViewModel: LoginViewModel, loginState: LoginState) {
 
 @Composable
 @Preview
-fun LoginScreenPrev(modifier: Modifier = Modifier) {
-    LoginScreen(onNavigateToNews = {})
+private fun LoginScreenPrev() {
+    MainScreen(onPasswordChange = {}, onSubmit = {}, onEmailChange = {}, loginState = LoginState(), onSignUpClick = {}, onForgotPasswordClick = {})
 }

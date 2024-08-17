@@ -17,7 +17,9 @@
     <string name="continue_as_a_guest">Continue as a guest</string>
     <string name="empty_string"> </string>
     <string name="enter_your_email">Enter Your Email</string>
+    <string name="enter_your_name">Enter Your Name</string>
     <string name="enter_your_password">Enter Your Password</string>
+    <string name="confirm_your_password">Confirm Your Password</string>
     <string name="icon_password_visible">Password Visible</string>
     <string name="icon_password_hidden">Password Hidden</string>
     <string name="login_error_msg_empty_email_mobile">Email field cannot be empty</string>
@@ -30,6 +32,7 @@
     <string name="signup_error_msg_empty_name">Name field cannot be empty</string>
     <string name="signup_invalid_msg_empty_name">Please enter a valid name</string>
     <string name="signup_error_msg_mismatch_password">Password not matching</string>
+    <string name="please_enter_your_information">Please enter your information</string>
     <string name="welcome">Welcome</string>
     <color name="Lavender">#8692f7</color>
 

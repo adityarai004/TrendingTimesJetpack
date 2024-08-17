@@ -10,3 +10,6 @@ object NewsRoute
 
 @Serializable
 object SignUpRoute
+
+@Serializable
+object ForgotPasswordRoute
