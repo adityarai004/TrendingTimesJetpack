@@ -8,4 +8,5 @@ sealed class SignUpUiEvent{
     data class SelectDob(val newDobValue: String): SignUpUiEvent()
     data class GenderSelected(val newGenderValue: String): SignUpUiEvent()
     data object SignUpClick: SignUpUiEvent()
+    data object DobClick: SignUpUiEvent()
 }

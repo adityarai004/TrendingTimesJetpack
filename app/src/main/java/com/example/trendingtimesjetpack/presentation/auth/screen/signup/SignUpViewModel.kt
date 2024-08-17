@@ -6,6 +6,7 @@ import com.example.trendingtimesjetpack.core.constants.RegexConstants
 import com.example.trendingtimesjetpack.core.ui.ErrorState
 import com.example.trendingtimesjetpack.presentation.auth.emailEmptyErrorState
 import com.example.trendingtimesjetpack.presentation.auth.invalidEmailErrorState
+import com.example.trendingtimesjetpack.presentation.auth.invalidPasswordErrorState
 import com.example.trendingtimesjetpack.presentation.auth.passwordEmptyErrorState
 import com.example.trendingtimesjetpack.presentation.auth.screen.signup.state.SignUpState
 import com.example.trendingtimesjetpack.presentation.auth.screen.signup.state.SignUpUiEvent
@@ -14,6 +15,7 @@ import com.example.trendingtimesjetpack.presentation.auth.screen.signup.state.em
 import com.example.trendingtimesjetpack.presentation.auth.screen.signup.state.emptyNameErrorState
 import com.example.trendingtimesjetpack.presentation.auth.screen.signup.state.invalidNameErrorState
 import com.example.trendingtimesjetpack.presentation.auth.screen.signup.state.mismatchPasswordErrorState
+import kotlin.math.sign
 
 class SignUpViewModel : ViewModel() {
     var signUpState = mutableStateOf(SignUpState())
@@ -25,7 +27,7 @@ class SignUpViewModel : ViewModel() {
                 signUpState.value = signUpState.value.copy(
                     name = event.newValue,
                     errorState = signUpState.value.errorState.copy(
-                        emailErrorState = if (event.newValue.isEmpty())
+                        nameErrorState = if (event.newValue.isEmpty())
                             emptyNameErrorState
                         else if (!event.newValue.matches(Regex(RegexConstants.NAME_REGEX)))
                             invalidNameErrorState
@@ -52,11 +54,12 @@ class SignUpViewModel : ViewModel() {
             is SignUpUiEvent.PasswordChanged -> {
                 signUpState.value = signUpState.value.copy(
                     password = event.newPasswordValue,
+                    confirmPassword = signUpState.value.confirmPassword,
                     errorState = signUpState.value.errorState.copy(
-                        emailErrorState = if (event.newPasswordValue.isEmpty())
-                            emailEmptyErrorState
+                        passwordErrorState = if (event.newPasswordValue.isEmpty())
+                            passwordEmptyErrorState
                         else if (!event.newPasswordValue.matches(Regex(RegexConstants.PASSWORD_REGEX)))
-                            invalidEmailErrorState
+                            invalidPasswordErrorState
                         else
                             ErrorState()
                     )
@@ -67,6 +70,7 @@ class SignUpViewModel : ViewModel() {
             is SignUpUiEvent.ConfirmPasswordChanged -> {
                 signUpState.value = signUpState.value.copy(
                     confirmPassword = event.newConfirmPasswordChanged,
+                    password = signUpState.value.password,
                     errorState = signUpState.value.errorState.copy(
                         confirmPasswordErrorState = if (event.newConfirmPasswordChanged.isEmpty())
                             passwordEmptyErrorState
@@ -107,6 +111,12 @@ class SignUpViewModel : ViewModel() {
                     signUpInProgress = true,
                     signUpErrorString = "",
                     isSignUpError = false
+                )
+            }
+
+            SignUpUiEvent.DobClick -> {
+                signUpState.value = signUpState.value.copy(
+                    isDobDialogOpen = !signUpState.value.isDobDialogOpen
                 )
             }
         }

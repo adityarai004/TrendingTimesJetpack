@@ -26,6 +26,7 @@
     <string name="invalid_email">Please enter a valid email</string>
     <string name="please_login_with_credentials">Please login with your credentials</string>
     <string name="login_error_msg_empty_password">Password Field Cannot Be Empty</string>
+    <string name="invalid_password_error_message">Password Must Contain at least 8 Characters, one lowercase letter, one uppercase letter, one digit, and one special character </string>
     <string name="signup_error_msg_empty_gender">Please select a gender</string>
     <string name="signup_error_msg_empty_dob">Please select a Date of Birth</string>
     <string name="signup_error_msg_invalid_dob">Please select a valid Date Of Birth</string>

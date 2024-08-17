@@ -13,8 +13,8 @@ data class SignUpState(
     val signUpInProgress: Boolean = false,
     val isSignUpError: Boolean = false,
     val signUpErrorString: String = "",
-    val errorState: SignUpErrorState = SignUpErrorState()
-
+    val errorState: SignUpErrorState = SignUpErrorState(),
+    val isDobDialogOpen: Boolean = false
 )
 
 data class SignUpErrorState(
