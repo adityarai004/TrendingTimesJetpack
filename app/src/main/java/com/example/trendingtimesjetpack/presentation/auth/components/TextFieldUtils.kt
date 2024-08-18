@@ -1,9 +1,7 @@
 package com.example.trendingtimesjetpack.presentation.auth.components
 
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -16,10 +14,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.dp
 import com.example.trendingtimesjetpack.R
 
 @Composable
@@ -76,11 +76,11 @@ fun PasswordTextField(
         trailingIcon = {
             IconButton(onClick = { passwordVisible = !passwordVisible }) {
                 val visibleIconText = Pair(
-                    first = Icons.Filled.Add,
+                    first = R.drawable.ic_show_password,
                     second = stringResource(id = R.string.icon_password_visible)
                 )
                 val hiddenIconText = Pair(
-                    first = Icons.Filled.Done,
+                    first = R.drawable.ic_hide_password,
                     second = stringResource(id = R.string.icon_password_hidden)
                 )
 
@@ -88,8 +88,10 @@ fun PasswordTextField(
                     if (passwordVisible) visibleIconText else hiddenIconText
 
                 Icon(
-                    imageVector = passwordVisibilityIconAndText.first,
-                    contentDescription = passwordVisibilityIconAndText.second
+                    painter = painterResource(passwordVisibilityIconAndText.first),
+                    contentDescription = passwordVisibilityIconAndText.second,
+                    modifier = Modifier.size(20.dp),
+                    tint = Color.Black
                 )
             }
         },

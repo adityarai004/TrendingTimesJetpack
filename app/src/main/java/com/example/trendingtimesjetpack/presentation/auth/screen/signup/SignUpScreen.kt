@@ -2,19 +2,16 @@ package com.example.trendingtimesjetpack.presentation.auth.screen.signup
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,11 +20,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -45,26 +40,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.AsyncImage
 import com.example.trendingtimesjetpack.R
-import com.example.trendingtimesjetpack.core.ui.ErrorState
-import com.example.trendingtimesjetpack.presentation.auth.components.AuthTextField
+import com.example.trendingtimesjetpack.presentation.auth.components.CustomButton
 import com.example.trendingtimesjetpack.presentation.auth.components.LargeTitleText
 import com.example.trendingtimesjetpack.presentation.auth.components.MediumTitleText
-import com.example.trendingtimesjetpack.presentation.auth.components.PasswordTextField
+import com.example.trendingtimesjetpack.presentation.auth.screen.signup.components.ImagePicker
+import com.example.trendingtimesjetpack.presentation.auth.screen.signup.components.SignUpTextFields
 import com.example.trendingtimesjetpack.presentation.auth.screen.signup.state.SignUpState
 import com.example.trendingtimesjetpack.presentation.auth.screen.signup.state.SignUpUiEvent
 import java.time.Instant
@@ -140,7 +130,8 @@ fun SignUpRoute(
                 requestPermissionContract.launch(if (isTiramisu) Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE)
             }
         },
-        onNavigateToLogin = onClickAlreadyHaveAccount
+        onNavigateToLogin = onClickAlreadyHaveAccount,
+        onSignUpClick = {}
     )
 }
 
@@ -158,7 +149,8 @@ fun SignUpScreen(
     onDismissRequest: () -> Unit,
     onConfirmClick: (Long) -> Unit,
     onUploadImageClick: () -> Unit,
-    onNavigateToLogin: () -> Unit
+    onNavigateToLogin: () -> Unit,
+    onSignUpClick: () -> Unit
 ) {
 
     if (signUpState.isDobDialogOpen) {
@@ -197,20 +189,18 @@ fun SignUpScreen(
                 .verticalScroll(scrollState)
                 .padding(innerPadding)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.signup),
-                contentDescription = "Sign Up Screen",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.3f),
-                contentScale = ContentScale.FillWidth,
-            )
             ElevatedCard(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors()
                     .copy(containerColor = colorResource(id = R.color.Lavender))
             ) {
+                LargeTitleText(text = "Create a New Account")
                 Column(modifier = Modifier.padding(12.dp)) {
+                    ImagePicker(
+                        modifier = Modifier.fillMaxWidth(),
+                        filePath = signUpState.pickedPhoto, onClickUpload =
+                        onUploadImageClick
+                    )
                     LargeTitleText(text = stringResource(id = R.string.welcome))
                     MediumTitleText(text = stringResource(id = R.string.please_enter_your_information))
                     SignUpTextFields(
@@ -281,102 +271,20 @@ fun SignUpScreen(
                         Icon(imageVector = Icons.Filled.DateRange, contentDescription = "DOB")
                     }
                     Spacer(modifier = Modifier.height(8.dp))
-                    ImagePicker(
-                        filePath = signUpState.pickedPhoto, onClickUpload =
-                        onUploadImageClick
-                    )
                     MediumTitleText(
                         text = "Already Have An Account?",
                         modifier = Modifier
                             .clickable(interactionSource = null, indication = null) {
                                 onNavigateToLogin()
                             }
-                            .padding(start = 8.dp)
+                            .padding(start = 8.dp),
+                        color = colorResource(id = R.color.black)
                     )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    CustomButton(onClick = onSignUpClick, text = "Sign Up", modifier = Modifier.fillMaxWidth())
                 }
             }
         }
-    }
-}
-
-@Composable
-fun ImagePicker(modifier: Modifier = Modifier, filePath: Uri?, onClickUpload: () -> Unit) {
-    Row(modifier = modifier) {
-        AsyncImage(
-            model = filePath,
-            contentDescription = "",
-            modifier = Modifier.fillMaxWidth(0.3f)
-        )
-        Button(onClick = onClickUpload, modifier = Modifier.fillMaxWidth()) {
-            Text("Pick Your Profile Pic")
-        }
-    }
-}
-
-@Composable
-private fun SignUpTextFields(
-    modifier: Modifier = Modifier, nameValue: String,
-    onNameChange: (String) -> Unit,
-    nameErrorState: ErrorState,
-    emailErrorState: ErrorState,
-    passwordErrorState: ErrorState,
-    confirmPasswordErrorState: ErrorState,
-    emailValue: String,
-    onEmailChange: (String) -> Unit,
-    passwordValue: String,
-    onPasswordChange: (String) -> Unit,
-    confirmPasswordValue: String,
-    confirmPasswordChange: (String) -> Unit,
-) {
-    Column(modifier = modifier) {
-        AuthTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = emailValue,
-            onValueChange = onEmailChange,
-            label = stringResource(id = R.string.enter_your_email),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email,
-                imeAction = ImeAction.Next
-            ),
-            isError = emailErrorState.hasError,
-            errorText = stringResource(id = emailErrorState.errorMessageStringResource)
-        )
-        AuthTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = nameValue,
-            onValueChange = onNameChange,
-            label = stringResource(id = R.string.enter_your_name),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next
-            ),
-            isError = nameErrorState.hasError,
-            errorText = stringResource(nameErrorState.errorMessageStringResource)
-        )
-        PasswordTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = passwordValue,
-            onValueChange = onPasswordChange,
-            label = stringResource(id = R.string.enter_your_password),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password,
-                imeAction = ImeAction.Next
-            ),
-            isError = passwordErrorState.hasError,
-            errorText = stringResource(passwordErrorState.errorMessageStringResource)
-        )
-        PasswordTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = confirmPasswordValue,
-            onValueChange = confirmPasswordChange,
-            label = stringResource(id = R.string.confirm_your_password),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password,
-                imeAction = ImeAction.Done
-            ),
-            isError = confirmPasswordErrorState.hasError,
-            errorText = stringResource(id = confirmPasswordErrorState.errorMessageStringResource)
-        )
     }
 }
 
@@ -395,6 +303,7 @@ private fun SignUpScreenPreview() {
         onConfirmClick = {},
         onDismissRequest = {},
         onUploadImageClick = {},
-        onNavigateToLogin = {}
+        onNavigateToLogin = {},
+        onSignUpClick = {}
     )
 }
