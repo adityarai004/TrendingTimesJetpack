@@ -5,7 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.trendingtimesjetpack.presentation.auth.screen.login.LoginScreen
-import com.example.trendingtimesjetpack.presentation.auth.screen.signup.SignUpScreen
+import com.example.trendingtimesjetpack.presentation.auth.screen.signup.SignUpRoute
 import com.example.trendingtimesjetpack.presentation.news.screen.NewsScreen
 
 @Composable
@@ -28,8 +28,10 @@ fun NavGraph(navHostController: NavHostController, startDestination: Any) {
             NewsScreen()
         }
         composable<SignUpRoute> {
-            SignUpScreen(
-                onClickAlreadyHaveAccount = {}
+            SignUpRoute(
+                onClickAlreadyHaveAccount = {
+                    navHostController.popBackStack()
+                }
             )
         }
     }
