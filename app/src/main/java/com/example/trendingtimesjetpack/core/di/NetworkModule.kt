@@ -2,7 +2,7 @@ package com.example.trendingtimesjetpack.core.di
 
 import android.util.Log
 import com.example.trendingtimesjetpack.core.constants.NetworkConstants
-import com.example.trendingtimesjetpack.core.networking.ApiService
+import com.example.trendingtimesjetpack.core.networking.AuthService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,6 +36,7 @@ object NetworkModule {
                 json(Json {
                     prettyPrint = true
                     isLenient = true
+                    ignoreUnknownKeys = true
                 })
             }
 
@@ -66,7 +67,7 @@ object NetworkModule {
     }
 
     @Provides
-    fun provideApiService(client: HttpClient): ApiService{
-        return ApiService(client)
+    fun provideAuthService(client: HttpClient): AuthService{
+        return AuthService(client)
     }
 }

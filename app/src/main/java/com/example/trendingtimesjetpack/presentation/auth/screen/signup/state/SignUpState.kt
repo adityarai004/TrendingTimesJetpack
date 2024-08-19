@@ -2,7 +2,6 @@ package com.example.trendingtimesjetpack.presentation.auth.screen.signup.state
 
 import android.net.Uri
 import com.example.trendingtimesjetpack.core.ui.ErrorState
-import java.net.URI
 
 data class SignUpState(
     val email: String = "",

@@ -103,7 +103,6 @@ fun LoginScreen(
                     CircularProgressIndicator(
                         modifier = Modifier
                             .align(Alignment.Center)
-                            .padding(24.dp)
                     )
                 }
             }

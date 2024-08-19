@@ -5,11 +5,11 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import com.example.trendingtimesjetpack.core.networking.ApiService
+import com.example.trendingtimesjetpack.core.networking.AuthService
 import com.example.trendingtimesjetpack.data.data_sources.local.prefs_data_source.PrefDataSource
 import com.example.trendingtimesjetpack.data.data_sources.local.prefs_data_source.PrefsDataSourceImpl
-import com.example.trendingtimesjetpack.data.data_sources.remote.login.AuthDataSource
-import com.example.trendingtimesjetpack.data.data_sources.remote.login.AuthDataSourceImpl
+import com.example.trendingtimesjetpack.data.data_sources.remote.auth.AuthDataSource
+import com.example.trendingtimesjetpack.data.data_sources.remote.auth.AuthDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,8 +22,8 @@ import javax.inject.Singleton
 object DataSourceModule {
     @Provides
     @Singleton
-    fun provideAuthDataSource(apiService: ApiService): AuthDataSource =
-        AuthDataSourceImpl(apiService)
+    fun provideAuthDataSource(authService: AuthService): AuthDataSource =
+        AuthDataSourceImpl(authService)
 
     @Provides
     @Singleton

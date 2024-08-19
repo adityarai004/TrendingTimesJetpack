@@ -1,7 +1,7 @@
 package com.example.trendingtimesjetpack.core.di
 
 import com.example.trendingtimesjetpack.data.data_sources.local.prefs_data_source.PrefDataSource
-import com.example.trendingtimesjetpack.data.data_sources.remote.login.AuthDataSource
+import com.example.trendingtimesjetpack.data.data_sources.remote.auth.AuthDataSource
 import com.example.trendingtimesjetpack.data.repository.AuthRepositoryImpl
 import com.example.trendingtimesjetpack.data.repository.LocalPrefsRepositoryImpl
 import com.example.trendingtimesjetpack.domain.repository.AuthRepository

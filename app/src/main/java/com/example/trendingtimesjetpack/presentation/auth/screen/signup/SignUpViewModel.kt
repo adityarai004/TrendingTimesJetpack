@@ -1,8 +1,11 @@
 package com.example.trendingtimesjetpack.presentation.auth.screen.signup
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.trendingtimesjetpack.core.constants.RegexConstants
 import com.example.trendingtimesjetpack.core.ui.ErrorState
+import com.example.trendingtimesjetpack.core.utils.Resource
+import com.example.trendingtimesjetpack.domain.use_cases.SignUpUseCase
 import com.example.trendingtimesjetpack.presentation.auth.emailEmptyErrorState
 import com.example.trendingtimesjetpack.presentation.auth.invalidEmailErrorState
 import com.example.trendingtimesjetpack.presentation.auth.invalidPasswordErrorState
@@ -13,11 +16,15 @@ import com.example.trendingtimesjetpack.presentation.auth.screen.signup.state.em
 import com.example.trendingtimesjetpack.presentation.auth.screen.signup.state.emptyNameErrorState
 import com.example.trendingtimesjetpack.presentation.auth.screen.signup.state.invalidNameErrorState
 import com.example.trendingtimesjetpack.presentation.auth.screen.signup.state.mismatchPasswordErrorState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SignUpViewModel : ViewModel() {
+@HiltViewModel
+class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCase) : ViewModel() {
     private val _signUpState = MutableStateFlow(SignUpState())
     val signUpState = _signUpState.asStateFlow()
 
@@ -115,13 +122,7 @@ class SignUpViewModel : ViewModel() {
             }
 
             SignUpUiEvent.SignUpClick -> {
-                _signUpState.update { newState ->
-                    newState.copy(
-                        signUpInProgress = true,
-                        signUpErrorString = "",
-                        isSignUpError = false
-                    )
-                }
+                signUpApiCall()
             }
 
             SignUpUiEvent.DobClick -> {
@@ -140,6 +141,83 @@ class SignUpViewModel : ViewModel() {
                     )
                 }
             }
+        }
+    }
+
+    private fun signUpApiCall() {
+        if (!validateInputs()) {
+            return
+        }
+        viewModelScope.launch {
+            signUpUseCase.invoke(
+                signUpState.value.name,
+                signUpState.value.email,
+                signUpState.value.password,
+                signUpState.value.gender,
+                signUpState.value.dob
+            ).collect {
+                when (it) {
+                    is Resource.Error -> {
+                        _signUpState.update { newState ->
+                            newState.copy(
+                                signUpInProgress = false,
+                                isSignUpError = true,
+                                signUpErrorString = it.message
+                            )
+                        }
+                    }
+
+                    Resource.Loading -> {
+                        _signUpState.update { newState ->
+                            newState.copy(
+                                signUpInProgress = true
+                            )
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        if (it.data.success) {
+                            _signUpState.update { newState ->
+                                newState.copy(
+                                    isSignUpSuccessful = true,
+                                )
+                            }
+                        } else {
+                            _signUpState.update { newState ->
+                                newState.copy(
+                                    signUpInProgress = false,
+                                    isSignUpError = true,
+                                    signUpErrorString = it.data.message
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun validateInputs(): Boolean {
+        val errorState = signUpState.value.errorState
+        return !(errorState.emailErrorState.hasError || errorState.nameErrorState.hasError || errorState.passwordErrorState.hasError || errorState.confirmPasswordErrorState.hasError || signUpState.value.gender.isEmpty())
+    }
+
+    fun resetError() {
+        _signUpState.update { newState ->
+            newState.copy(
+                isSignUpError = false,
+                signUpErrorString = ""
+            )
+        }
+    }
+
+    fun resetSuccess() {
+        _signUpState.update { newState ->
+            newState.copy(
+                isSignUpError = false,
+                signUpErrorString = "",
+                isSignUpSuccessful = false
+            )
         }
     }
 }

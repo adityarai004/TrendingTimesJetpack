@@ -9,6 +9,7 @@ import com.example.trendingtimesjetpack.domain.use_cases.LoginUseCase
 import com.example.trendingtimesjetpack.domain.use_cases.SetBooleanUseCase
 import com.example.trendingtimesjetpack.domain.use_cases.SetStringUseCase
 import com.example.trendingtimesjetpack.domain.use_cases.SetUserAuthTokenUseCase
+import com.example.trendingtimesjetpack.domain.use_cases.SignUpUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -53,4 +54,9 @@ object UseCaseModule {
     @Singleton
     fun provideSetStringUseCase(localPrefsRepository: LocalPrefsRepository): SetStringUseCase =
         SetStringUseCase(localPrefsRepository)
+
+    @Provides
+    @Singleton
+    fun provideSignUpUseCase(authRepository: AuthRepository): SignUpUseCase =
+        SignUpUseCase(authRepository)
 }
