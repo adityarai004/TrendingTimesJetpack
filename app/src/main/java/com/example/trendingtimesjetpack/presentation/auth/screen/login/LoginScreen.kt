@@ -144,10 +144,10 @@ private fun MainScreen(
                     value = loginState.email,
                     onValueChange = onEmailChange,
                     label = stringResource(id = R.string.enter_your_email),
-                    keyboardOptions = KeyboardOptions
-                        (
+                    keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Next,
-                        keyboardType = KeyboardType.Email
+                        keyboardType = KeyboardType.Email,
+                        showKeyboardOnFocus = true
                     ),
                     errorText = stringResource(id = loginState.errorState.emailOrMobileErrorState.errorMessageStringResource),
                     isError = loginState.errorState.emailOrMobileErrorState.hasError
@@ -159,7 +159,8 @@ private fun MainScreen(
                     label = stringResource(id = R.string.enter_your_password),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password,
-                        imeAction = ImeAction.Done
+                        imeAction = ImeAction.Done,
+                        showKeyboardOnFocus = true
                     ),
                     errorText = stringResource(id = loginState.errorState.passwordErrorState.errorMessageStringResource),
                     isError = loginState.errorState.passwordErrorState.hasError
@@ -193,5 +194,11 @@ private fun MainScreen(
 @Composable
 @Preview
 private fun LoginScreenPrev() {
-    MainScreen(onPasswordChange = {}, onSubmit = {}, onEmailChange = {}, loginState = LoginState(), onSignUpClick = {}, onForgotPasswordClick = {})
+    MainScreen(
+        onPasswordChange = {},
+        onSubmit = {},
+        onEmailChange = {},
+        loginState = LoginState(),
+        onSignUpClick = {},
+        onForgotPasswordClick = {})
 }

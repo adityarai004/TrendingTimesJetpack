@@ -28,7 +28,6 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     private val _signUpState = MutableStateFlow(SignUpState())
     val signUpState = _signUpState.asStateFlow()
 
-
     fun onUiEvent(event: SignUpUiEvent) {
         when (event) {
             is SignUpUiEvent.NameChanged -> {

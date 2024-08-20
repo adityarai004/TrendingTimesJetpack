@@ -5,4 +5,15 @@ object NetworkConstants{
 
     const val LOGIN = "/auth/login"
     const val SIGN_UP = "/auth/register"
+
+    const val TOP_HEADLINES = "top_headlines"
+    const val BUSINESS = "business"
+    const val SCIENCE = "science"
+    const val POLITICS = "politics"
+    const val HEALTH = "health"
+    const val EDUCATION = "education"
+    const val TECHNOLOGY = "technology"
+    const val ENTERTAINMENT = "entertainment"
+    const val OPINION = "opinion"
+    const val SPORTS = "sports"
 }

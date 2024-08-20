@@ -42,7 +42,7 @@ fun NavGraph(navHostController: NavHostController, startDestination: Any) {
 
         }
         composable<NewsRoute> {
-            NewsScreen()
+            NewsScreen({},{})
         }
         composable<SignUpRoute>(
             enterTransition = {
