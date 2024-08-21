@@ -1,8 +1,11 @@
 package com.example.trendingtimesjetpack.core.di
 
+import com.example.trendingtimesjetpack.data.data_sources.remote.news.NewsPagingFactory
 import com.example.trendingtimesjetpack.domain.repository.AuthRepository
 import com.example.trendingtimesjetpack.domain.repository.LocalPrefsRepository
+import com.example.trendingtimesjetpack.domain.repository.NewsRepository
 import com.example.trendingtimesjetpack.domain.use_cases.GetBooleanUseCase
+import com.example.trendingtimesjetpack.domain.use_cases.GetNewsUseCase
 import com.example.trendingtimesjetpack.domain.use_cases.GetStringUseCase
 import com.example.trendingtimesjetpack.domain.use_cases.GetUserAuthKeyUseCase
 import com.example.trendingtimesjetpack.domain.use_cases.LoginUseCase
@@ -59,4 +62,9 @@ object UseCaseModule {
     @Singleton
     fun provideSignUpUseCase(authRepository: AuthRepository): SignUpUseCase =
         SignUpUseCase(authRepository)
+
+    @Provides
+    fun provideGetNewsUseCase(newsPagingFactory: NewsPagingFactory): GetNewsUseCase {
+        return GetNewsUseCase(newsPagingFactory)
+    }
 }

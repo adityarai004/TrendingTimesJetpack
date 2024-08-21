@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -32,7 +34,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.trendingtimesjetpack.R
 import com.example.trendingtimesjetpack.presentation.auth.components.LargeTitleText
 
@@ -40,8 +45,10 @@ import com.example.trendingtimesjetpack.presentation.auth.components.LargeTitleT
 fun NewsScreen(
     onNavigateToBookmarks: () -> Unit,
     onNavigateToSettings: () -> Unit,
-    newsViewModel: NewsViewModel = viewModel()
+    newsViewModel: NewsViewModel = hiltViewModel()
 ) {
+
+    val newsList = newsViewModel.newsList.collectAsLazyPagingItems()
     Scaffold(
         topBar = {
             Row(
@@ -67,7 +74,7 @@ fun NewsScreen(
                             contentDescription = "Bookmarks Buttons"
                         )
                     }
-                    IconButton(onClick = onNavigateToSettings) {
+                    IconButton(onClick = { newsViewModel.doApiCall() }) {
                         Icon(
                             imageVector = Icons.Filled.Settings,
                             contentDescription = "Settings Button"
@@ -105,6 +112,49 @@ fun NewsScreen(
                     Text(text = index)
                 }
                 item {
+                }
+            }
+
+            newsList.apply {
+                when{
+                    loadState.refresh is LoadState.Loading -> {
+//                        item { LoadingView(modifier = Modifier.fillMaxSize()) }
+                    }
+
+                    loadState.append is LoadState.Loading -> {
+//                        item { LoadingItem() }
+                    }
+
+                    loadState.refresh is LoadState.Error -> {
+//                        item {
+//                            ErrorItem(
+//                                message = "Something went wrong",
+//                                modifier = Modifier.fillMaxSize(),
+//                                onClickRetry = { retry() }
+//                            )
+//                        }
+                    }
+
+                    loadState.append is LoadState.Error -> {
+//                        item {
+//                            ErrorItem(
+//                                message = "Something went wrong",
+//                                onClickRetry = { retry() }
+//                            )
+//                        }
+                    }
+
+                    else -> {
+                        LazyColumn {
+                            items(newsList.itemCount){
+                                Row (modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(40.dp)){
+                                    newsList[it]?.let { it1 -> Text(text = it1.title) }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

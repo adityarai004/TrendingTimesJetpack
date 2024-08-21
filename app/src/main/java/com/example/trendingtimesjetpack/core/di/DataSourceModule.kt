@@ -6,10 +6,14 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.example.trendingtimesjetpack.core.networking.AuthService
+import com.example.trendingtimesjetpack.core.networking.NewsService
 import com.example.trendingtimesjetpack.data.data_sources.local.prefs_data_source.PrefDataSource
 import com.example.trendingtimesjetpack.data.data_sources.local.prefs_data_source.PrefsDataSourceImpl
 import com.example.trendingtimesjetpack.data.data_sources.remote.auth.AuthDataSource
 import com.example.trendingtimesjetpack.data.data_sources.remote.auth.AuthDataSourceImpl
+import com.example.trendingtimesjetpack.data.data_sources.remote.news.NewsDataSource
+import com.example.trendingtimesjetpack.data.data_sources.remote.news.NewsDataSourceImpl
+import com.example.trendingtimesjetpack.data.data_sources.remote.news.NewsPagingFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,4 +42,14 @@ object DataSourceModule {
     fun provideDataStoreDataStore(dataStore: DataStore<Preferences>): PrefDataSource {
         return PrefsDataSourceImpl(dataStore)
     }
+
+    @Provides
+    @Singleton
+    fun provideNewsDataSource(newsService: NewsService): NewsDataSource =
+        NewsDataSourceImpl(newsService)
+
+    @Provides
+    @Singleton
+    fun provideNewsPagingFactory(newsDataSource: NewsDataSource): NewsPagingFactory =
+        NewsPagingFactory(newsDataSource)
 }

@@ -8,7 +8,7 @@ object NetworkConstants{
 
     const val TOP_HEADLINES = "top_headlines"
     const val BUSINESS = "business"
-    const val SCIENCE = "science"
+    const val SCIENCE = "/news/science"
     const val POLITICS = "politics"
     const val HEALTH = "health"
     const val EDUCATION = "education"

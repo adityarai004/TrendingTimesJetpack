@@ -3,6 +3,7 @@ package com.example.trendingtimesjetpack.core.di
 import android.util.Log
 import com.example.trendingtimesjetpack.core.constants.NetworkConstants
 import com.example.trendingtimesjetpack.core.networking.AuthService
+import com.example.trendingtimesjetpack.core.networking.NewsService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -69,5 +70,10 @@ object NetworkModule {
     @Provides
     fun provideAuthService(client: HttpClient): AuthService{
         return AuthService(client)
+    }
+
+    @Provides
+    fun provideNewsService(client: HttpClient): NewsService{
+        return NewsService(client)
     }
 }
