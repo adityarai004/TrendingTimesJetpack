@@ -6,11 +6,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class NewsDTO(
     @SerialName("articles")
-    val articles: List<Article>,
+    val articles: List<Article>?,
     @SerialName("currentPage")
     val currentPage: Int,
     @SerialName("totalPages")
-    val totalPages: Int,
+    val totalPages: Int?,
     @SerialName("totalResults")
-    val totalResults: Int
+    val totalResults: Int?
 )

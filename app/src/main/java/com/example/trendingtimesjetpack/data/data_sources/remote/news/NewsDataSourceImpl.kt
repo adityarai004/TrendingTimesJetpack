@@ -6,8 +6,8 @@ import javax.inject.Inject
 
 class NewsDataSourceImpl @Inject constructor(private val newsService: NewsService) :
     NewsDataSource {
-    override suspend fun getNews(query: String, page: Int): NewsDTO {
-        return newsService.getNews(query, page)
+    override suspend fun getNews(query: String, page: Int, perPage: Int): NewsDTO {
+        return newsService.getNews(query, page, perPage)
     }
 
 }

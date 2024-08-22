@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
                 mainViewModel.isLoading.value
             }
         }
-        enableEdgeToEdge()
+//        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
             TrendingTimesJetpackTheme {

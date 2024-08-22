@@ -1,5 +1,18 @@
 package com.example.trendingtimesjetpack.presentation.news.screen.state
 
-sealed interface NewsUiState {
-    data object Loading: NewsUiState
-}
+data class NewsUiState(
+    val loading: Boolean = false,
+    val categoryList: List<String> = listOf(
+        "Top-Headlines",
+        "Technology",
+        "Politics",
+        "Health",
+        "Science",
+        "Entertainment",
+        "Sports",
+        "Opinion",
+        "Business",
+        "Education"
+    ),
+    val selectedIndex: Int = 0
+)

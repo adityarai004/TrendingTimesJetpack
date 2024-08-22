@@ -6,23 +6,23 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Article(
     @SerialName("author")
-    val author: String,
+    val author: String? = null,
     @SerialName("content")
-    val content: String,
+    val content: String? = null,
     @SerialName("description")
-    val description: String,
+    val description: String? = null,
     @SerialName("_id")
-    val id: String,
+    val id: String? = null,
     @SerialName("likes")
-    val likes: Int,
+    val likes: Int? = null,
     @SerialName("publishedAt")
-    val publishedAt: String,
+    val publishedAt: String? = null,
     @SerialName("source")
-    val source: Source,
+    val source: Source? = null,
     @SerialName("title")
-    val title: String,
+    val title: String? = null,
     @SerialName("url")
-    val url: String,
+    val url: String? = null,
     @SerialName("urlToImage")
-    val urlToImage: String
+    val urlToImage: String? = null
 )

@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.trendingtimesjetpack.presentation.auth.screen.login.LoginScreen
 import com.example.trendingtimesjetpack.presentation.auth.screen.signup.SignUpRoute
+import com.example.trendingtimesjetpack.presentation.news.screen.NewsRoute
 import com.example.trendingtimesjetpack.presentation.news.screen.NewsScreen
 
 @Composable
@@ -42,7 +43,7 @@ fun NavGraph(navHostController: NavHostController, startDestination: Any) {
 
         }
         composable<NewsRoute> {
-            NewsScreen({},{})
+            NewsRoute(onNavigateToBookmarks = {}, onNavigateToSettings = {}, )
         }
         composable<SignUpRoute>(
             enterTransition = {
