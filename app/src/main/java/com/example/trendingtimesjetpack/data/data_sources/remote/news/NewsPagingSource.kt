@@ -22,7 +22,7 @@ class NewsPagingSource @Inject constructor(
         try {
             // Start refresh at page 1 if undefined.
             val nextPageNumber = params.key ?: 1
-            val perPage = params.loadSize ?: 1
+            val perPage = params.loadSize
             val response = newsDataSource.getNews(query, nextPageNumber, perPage)
             return LoadResult.Page(
                 data = response.articles ?: arrayListOf(),

@@ -1,6 +1,6 @@
 package com.example.trendingtimesjetpack.core.constants
 
-object NetworkConstants{
+object NetworkConstants {
     const val BASE_URL = "https://trendingtimesbackend.onrender.com"
 
     const val LOGIN = "/auth/login"
@@ -16,4 +16,17 @@ object NetworkConstants{
     const val ENTERTAINMENT = "entertainment"
     const val OPINION = "opinion"
     const val SPORTS = "sports"
+
+    val NEWS_ENDPOINTS = arrayOf(
+        "news/$TOP_HEADLINES",
+        "news/$TECHNOLOGY",
+        "news/$POLITICS",
+        "news/$HEALTH",
+        "news/$SCIENCE",
+        "news/$ENTERTAINMENT",
+        "news/$SPORTS",
+        "news/$OPINION",
+        "news/$BUSINESS",
+        "news/$EDUCATION"
+    )
 }
