@@ -41,27 +41,75 @@ class NewsViewModel @Inject constructor(private val getNewsUseCase: GetNewsUseCa
     fun onUiEvent(newsEvent: NewsEvent) {
         when (newsEvent) {
             is NewsEvent.ChangePage -> _newsUiState.update { newState ->
-                if(newsUiState.value.newsMap.containsKey(newsEvent.page)){
+                val updatableMap = newState.newsMap.toMutableMap()
+                val isLoading = newState.isLoading.toMutableList()
+                if (!newsUiState.value.newsMap.containsKey(newsEvent.page)) {
+                    updatableMap[newsEvent.page] = PagingData.empty()
+                    isLoading.add(newsEvent.page)
                     doApiCall(newsEvent.page)
                 }
                 newState.copy(
-                    selectedIndex = newsEvent.page
+                    selectedIndex = newsEvent.page,
+                    newsMap = updatableMap,
+                    isLoading = isLoading
                 )
             }
         }
     }
 
-    fun doApiCall(index : Int) {
+    private fun doApiCall(index: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            getNewsUseCase.invoke(query = NEWS_ENDPOINTS[index]).collect {
-                newsList.value = it
-//                _newsUiState.update { newState ->
-//                    newState.copy(
-//                        newsMap = newState.newsMap.toMutableMap().apply {
-//                            put(index,it)
-//                        }
-//                    )
-//                }
+            getNewsUseCase.invoke(query = NEWS_ENDPOINTS[index]).collect { pagingData ->
+                when (_newsUiState.value.selectedIndex) {
+                    0 -> {
+                        _newsUiState.value.newsListsState.topHeadlines.value = pagingData
+                        _newsUiState.update { newState ->
+                            val updatableMap = newState.newsMap.toMutableMap()
+                            val isLoading = newState.isLoading.toMutableList()
+                            isLoading.add(0)
+                            newState.copy(
+                                newsMap = updatableMap,
+                                isLoading = isLoading
+                            )
+                        }
+                    }
+
+                    1 -> {
+                        _newsUiState.value.newsListsState.technology.value = pagingData
+                    }
+
+                    2 -> {
+                        _newsUiState.value.newsListsState.politics.value = pagingData
+                    }
+
+                    3 -> {
+                        _newsUiState.value.newsListsState.health.value = pagingData
+                    }
+
+                    4 -> {
+                        _newsUiState.value.newsListsState.science.value = pagingData
+                    }
+
+                    5 -> {
+                        _newsUiState.value.newsListsState.entertainment.value = pagingData
+                    }
+
+                    6 -> {
+                        _newsUiState.value.newsListsState.sports.value = pagingData
+                    }
+
+                    7 -> {
+                        _newsUiState.value.newsListsState.opinions.value = pagingData
+                    }
+
+                    8 -> {
+                        _newsUiState.value.newsListsState.business.value = pagingData
+                    }
+
+                    9 -> {
+                        _newsUiState.value.newsListsState.education.value = pagingData
+                    }
+                }
             }
         }
     }

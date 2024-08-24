@@ -3,6 +3,7 @@ package com.example.trendingtimesjetpack.presentation.news.screen
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,9 +39,7 @@ import com.example.trendingtimesjetpack.presentation.news.components.NewsTabView
 import com.example.trendingtimesjetpack.presentation.news.components.NewsTopAppBar
 import com.example.trendingtimesjetpack.presentation.news.screen.state.NewsEvent
 import com.example.trendingtimesjetpack.presentation.news.screen.state.NewsUiState
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 
 
@@ -48,9 +49,22 @@ fun NewsRoute(
     onNavigateToSettings: () -> Unit,
     newsViewModel: NewsViewModel = hiltViewModel()
 ) {
-    val newsList = newsViewModel.newsList.collectAsLazyPagingItems()
+//    val newsList = newsViewModel.newsList.collectAsLazyPagingItems()
     val newsState by newsViewModel.newsUiState.collectAsStateWithLifecycle()
-    NewsScreen(onNavigateToBookmarks, onNavigateToSettings, newsList,newsState,
+    val newsLists = arrayListOf(
+        newsState.newsListsState.topHeadlines.collectAsLazyPagingItems(),
+        newsState.newsListsState.technology.collectAsLazyPagingItems(),
+        newsState.newsListsState.politics.collectAsLazyPagingItems(),
+        newsState.newsListsState.health.collectAsLazyPagingItems(),
+        newsState.newsListsState.science.collectAsLazyPagingItems(),
+        newsState.newsListsState.entertainment.collectAsLazyPagingItems(),
+        newsState.newsListsState.sports.collectAsLazyPagingItems(),
+        newsState.newsListsState.opinions.collectAsLazyPagingItems(),
+        newsState.newsListsState.business.collectAsLazyPagingItems(),
+        newsState.newsListsState.education.collectAsLazyPagingItems(),
+
+    )
+    NewsScreen(onNavigateToBookmarks, onNavigateToSettings, newsLists, newsState,
         onPageChange = {
             newsViewModel.onUiEvent(NewsEvent.ChangePage(it))
         })
@@ -60,7 +74,7 @@ fun NewsRoute(
 fun NewsScreen(
     onNavigateToBookmarks: () -> Unit,
     onNavigateToSettings: () -> Unit,
-    newsListOld: LazyPagingItems<Article>,
+    newsListOld: ArrayList<LazyPagingItems<Article>>,
     newsUiState: NewsUiState,
     onPageChange: (Int) -> Unit
 ) {
@@ -98,22 +112,28 @@ fun NewsScreen(
             )
 
             HorizontalPager(
-                state = pagerState, modifier = Modifier.fillMaxSize(),
+                state = pagerState, modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.White),
             ) {
-//                val newsList = newsUiState.newsMap[newsUiState.categoryList[newsUiState.selectedIndex]]?.consumeAsFlow()
-//                        ?.collectAsLazyPagingItems()
-
-                LazyColumn(verticalArrangement = Arrangement.Top) {
-                    items(newsListOld.itemCount) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(40.dp)
-                        ) {
-                            newsListOld[it]?.let { it1 -> it1.title?.let { it2 -> Text(text = it2) } }
+                if(newsListOld[pagerState.currentPage].itemCount == 0 || !newsUiState.isLoading.contains(pagerState.currentPage)){
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                } else{
+                    LazyColumn(verticalArrangement = Arrangement.Top) {
+                        items(newsListOld[newsUiState.selectedIndex].itemCount) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(40.dp)
+                            ) {
+                                newsListOld[newsUiState.selectedIndex][it]?.title?.let { it1 -> Text(text = it1, color = Color.Black) }
+                            }
                         }
                     }
                 }
+
 //                LazyColumn(verticalArrangement = Arrangement.Top) {
 //                    newsListOld?.itemCount?.let { it1 ->
 //                        items(it1) {
@@ -132,36 +152,36 @@ fun NewsScreen(
 
             newsListOld.apply {
                 when {
-                    loadState.refresh is LoadState.Loading -> {
-//                        item { LoadingView(modifier = Modifier.fillMaxSize()) }
-                    }
-
-                    loadState.append is LoadState.Loading -> {
-//                        item { LoadingItem() }
-                    }
-
-                    loadState.refresh is LoadState.Error -> {
-//                        item {
-//                            ErrorItem(
-//                                message = "Something went wrong",
-//                                modifier = Modifier.fillMaxSize(),
-//                                onClickRetry = { retry() }
-//                            )
-//                        }
-                    }
-
-                    loadState.append is LoadState.Error -> {
-//                        item {
-//                            ErrorItem(
-//                                message = "Something went wrong",
-//                                onClickRetry = { retry() }
-//                            )
-//                        }
-                    }
-
-                    else -> {
-
-                    }
+//                    loadState.refresh is LoadState.Loading -> {
+////                        item { LoadingView(modifier = Modifier.fillMaxSize()) }
+//                    }
+//
+//                    loadState.append is LoadState.Loading -> {
+////                        item { LoadingItem() }
+//                    }
+//
+//                    loadState.refresh is LoadState.Error -> {
+////                        item {
+////                            ErrorItem(
+////                                message = "Something went wrong",
+////                                modifier = Modifier.fillMaxSize(),
+////                                onClickRetry = { retry() }
+////                            )
+////                        }
+//                    }
+//
+//                    loadState.append is LoadState.Error -> {
+////                        item {
+////                            ErrorItem(
+////                                message = "Something went wrong",
+////                                onClickRetry = { retry() }
+////                            )
+////                        }
+//                    }
+//
+//                    else -> {
+//
+//                    }
                 }
             }
         }
@@ -171,39 +191,39 @@ fun NewsScreen(
 @Preview
 @Composable
 fun NewsScreenPreview(modifier: Modifier = Modifier) {
-    NewsScreen({}, {},
-        flowOf(
-        PagingData.from(
-            listOf(
-                Article(
-                    title = "Understanding Kotlin Coroutines",
-                    author = "Jane Doe",
-                    content = "Kotlin coroutines are a powerful feature that allows for asynchronous programming..."
-                ),
-                Article(
-                    title = "Getting Started with Jetpack Compose",
-                    author = "John Smith",
-                    content = "Jetpack Compose is a modern toolkit for building native Android UI..."
-                ),
-                Article(
-                    title = "Introduction to Clean Architecture",
-                    author = "Emily Johnson",
-                    content = "Clean Architecture is a design pattern that helps in maintaining the separation of concerns..."
-                ),
-                Article(
-                    title = "Exploring Ktor for Android Development",
-                    author = "Michael Brown",
-                    content = "Ktor is a framework for building asynchronous servers and clients in connected systems..."
-                ),
-                Article(
-                    title = "Advanced Tips for Using Room Database",
-                    author = "Sarah Lee",
-                    content = "Room is a database abstraction layer that allows for seamless integration with SQLite..."
-                )
-            )
-        )
-    ).collectAsLazyPagingItems(),
-        NewsUiState(),
-        onPageChange = {}
-    )
+//    NewsScreen({}, {},
+//        flowOf(
+//            PagingData.from(
+//                listOf(
+//                    Article(
+//                        title = "Understanding Kotlin Coroutines",
+//                        author = "Jane Doe",
+//                        content = "Kotlin coroutines are a powerful feature that allows for asynchronous programming..."
+//                    ),
+//                    Article(
+//                        title = "Getting Started with Jetpack Compose",
+//                        author = "John Smith",
+//                        content = "Jetpack Compose is a modern toolkit for building native Android UI..."
+//                    ),
+//                    Article(
+//                        title = "Introduction to Clean Architecture",
+//                        author = "Emily Johnson",
+//                        content = "Clean Architecture is a design pattern that helps in maintaining the separation of concerns..."
+//                    ),
+//                    Article(
+//                        title = "Exploring Ktor for Android Development",
+//                        author = "Michael Brown",
+//                        content = "Ktor is a framework for building asynchronous servers and clients in connected systems..."
+//                    ),
+//                    Article(
+//                        title = "Advanced Tips for Using Room Database",
+//                        author = "Sarah Lee",
+//                        content = "Room is a database abstraction layer that allows for seamless integration with SQLite..."
+//                    )
+//                )
+//            )
+//        ).collectAsLazyPagingItems(),
+//        NewsUiState(),
+//        onPageChange = {}
+//    )
 }

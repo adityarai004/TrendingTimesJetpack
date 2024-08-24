@@ -6,27 +6,27 @@ object NetworkConstants {
     const val LOGIN = "/auth/login"
     const val SIGN_UP = "/auth/register"
 
-    const val TOP_HEADLINES = "top_headlines"
-    const val BUSINESS = "business"
-    const val SCIENCE = "/news/science"
-    const val POLITICS = "politics"
-    const val HEALTH = "health"
-    const val EDUCATION = "education"
-    const val TECHNOLOGY = "technology"
-    const val ENTERTAINMENT = "entertainment"
-    const val OPINION = "opinion"
-    const val SPORTS = "sports"
+    const val TOP_HEADLINES = "news/top_headlines"
+    const val BUSINESS = "news/business"
+    const val SCIENCE = "news/science"
+    const val POLITICS = "news/politics"
+    const val HEALTH = "news/health"
+    const val EDUCATION = "news/education"
+    const val TECHNOLOGY = "news/technology"
+    const val ENTERTAINMENT = "news/entertainment"
+    const val OPINION = "news/opinion"
+    const val SPORTS = "news/sports"
 
     val NEWS_ENDPOINTS = arrayOf(
-        "news/$TOP_HEADLINES",
-        "news/$TECHNOLOGY",
-        "news/$POLITICS",
-        "news/$HEALTH",
-        "news/$SCIENCE",
-        "news/$ENTERTAINMENT",
-        "news/$SPORTS",
-        "news/$OPINION",
-        "news/$BUSINESS",
-        "news/$EDUCATION"
+        TOP_HEADLINES,
+        TECHNOLOGY,
+        POLITICS,
+        HEALTH,
+        SCIENCE,
+        ENTERTAINMENT,
+        SPORTS,
+        OPINION,
+        BUSINESS,
+        EDUCATION,
     )
 }
