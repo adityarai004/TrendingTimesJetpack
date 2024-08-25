@@ -1,6 +1,7 @@
 package com.example.trendingtimesjetpack.presentation.news.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -24,38 +25,17 @@ import com.example.trendingtimesjetpack.presentation.auth.components.MediumTitle
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsTopAppBar(
-    modifier: Modifier = Modifier,
-    onNavigateToBookmarks: () -> Unit,
-    onNavigateToSettings: () -> Unit
+    title: String,
+    actions: @Composable RowScope.() -> Unit = {},
+    navigationIcon: @Composable () -> Unit = {}
 ) {
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors()
             .copy(containerColor = colorResource(id = R.color.Lavender)),
         title = {
-            MediumTitleText(text = "Trending Times", color = Color.White)
+            MediumTitleText(text = title, color = Color.White)
         },
-        actions = {
-            IconButton(onClick = onNavigateToBookmarks) {
-                Icon(
-                    imageVector = Icons.Filled.FavoriteBorder,
-                    contentDescription = "Bookmarks Buttons"
-                )
-            }
-            IconButton(onClick = { onNavigateToSettings() }) {
-                Icon(
-                    imageVector = Icons.Filled.Settings,
-                    contentDescription = "Settings Button"
-                )
-            }
-        },
-        navigationIcon = {
-            Image(
-                painter = painterResource(id = R.drawable.logo2),
-                contentDescription = "",
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .size(50.dp)
-            )
-        },
+        actions = actions,
+        navigationIcon = navigationIcon
     )
 }

@@ -3,14 +3,13 @@ package com.example.trendingtimesjetpack
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.collectAsState
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.trendingtimesjetpack.core.navigation.LoginRoute
+import com.example.trendingtimesjetpack.core.navigation.LoginNavigation
 import com.example.trendingtimesjetpack.core.navigation.NavGraph
-import com.example.trendingtimesjetpack.core.navigation.NewsRoute
+import com.example.trendingtimesjetpack.core.navigation.NewsNavigation
 import com.example.trendingtimesjetpack.presentation.theme.TrendingTimesJetpackTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -34,7 +33,7 @@ class MainActivity : ComponentActivity() {
             TrendingTimesJetpackTheme {
                 navController = rememberNavController()
                 val isLoggedIn = mainViewModel.isLoggedIn.collectAsState()
-                val startDestination: Any = if (isLoggedIn.value) NewsRoute else LoginRoute
+                val startDestination: Any = if (isLoggedIn.value) NewsNavigation else LoginNavigation
                 NavGraph(navHostController = navController, startDestination)
             }
         }

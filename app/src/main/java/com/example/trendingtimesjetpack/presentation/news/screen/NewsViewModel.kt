@@ -2,6 +2,7 @@ package com.example.trendingtimesjetpack.presentation.news.screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.example.trendingtimesjetpack.core.constants.NetworkConstants.NEWS_ENDPOINTS
 import com.example.trendingtimesjetpack.domain.use_cases.GetNewsUseCase
 import com.example.trendingtimesjetpack.presentation.news.screen.state.NewsEvent
@@ -21,26 +22,28 @@ class NewsViewModel @Inject constructor(private val getNewsUseCase: GetNewsUseCa
     val newsUiState = _newsUiState.asStateFlow()
 
     init {
-        _doApiCall(0)
+        doApiCall(0)
     }
 
     fun onUiEvent(newsEvent: NewsEvent) {
         when (newsEvent) {
             is NewsEvent.ChangePage -> _newsUiState.update { newState ->
-                if (!newState.doneLoadingFirstPage) {
-                    _doApiCall(newsEvent.page)
+                val updatableList = newState.downloadedPages.toMutableList()
+                if (!newState.downloadedPages.contains(newsEvent.page)) {
+                    doApiCall(newsEvent.page)
+                    updatableList.add(newsEvent.page)
                 }
                 newState.copy(
                     selectedIndex = newsEvent.page,
-                    doneLoadingFirstPage = true
+                    downloadedPages = updatableList
                 )
             }
         }
     }
 
-    private fun _doApiCall(index: Int) {
+    private fun doApiCall(index: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            getNewsUseCase(query = NEWS_ENDPOINTS[index]).collect { pagingData ->
+            getNewsUseCase(query = NEWS_ENDPOINTS[index]).cachedIn(viewModelScope).collect { pagingData ->
                 when (_newsUiState.value.selectedIndex) {
                     0 -> {
                         _newsUiState.value.newsListsState.topHeadlines.value = pagingData

@@ -11,7 +11,7 @@ class NewsService @Inject constructor(private val httpClient: HttpClient) {
         val response = httpClient.get(newsEndpoint){
             url{
                 parameters.append("page", page.toString())
-                parameters.append("limit", perPage.toString())
+                parameters.append("limit", "20")
             }
         }.body<NewsDTO>()
         return response

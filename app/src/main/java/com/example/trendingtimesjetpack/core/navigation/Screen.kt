@@ -3,13 +3,16 @@ package com.example.trendingtimesjetpack.core.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-object LoginRoute
+object LoginNavigation
 
 @Serializable
-object NewsRoute
+object NewsNavigation
 
 @Serializable
-object SignUpRoute
+object SignUpNavigation
 
 @Serializable
-object ForgotPasswordRoute
+object ForgotPasswordNavigation
+
+@Serializable
+data class ReadNewsNavigation(val newsUrl: String)

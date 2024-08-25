@@ -1,6 +1,7 @@
 package com.example.trendingtimesjetpack.presentation.news.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,8 +33,13 @@ import com.example.trendingtimesjetpack.R
 import com.example.trendingtimesjetpack.data.dto.news.Article
 
 @Composable
-fun NewsItem(article: Article?) {
-    Row(modifier = Modifier.height(120.dp).padding(4.dp)) {
+fun NewsItem(article: Article?,onClick: (String) -> Unit) {
+    Row(modifier = Modifier
+        .height(120.dp)
+        .padding(4.dp)
+        .clickable(interactionSource = null, indication = null) {
+            onClick(article?.url ?: "https://google.com")
+        }) {
         AsyncImage(
             model = article?.urlToImage,
             contentDescription = "Article Image",
@@ -61,24 +67,33 @@ fun NewsItem(article: Article?) {
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick = {  }) {
-                    Icon(imageVector = Icons.Filled.Share, contentDescription = "Share News")
+                IconButton(onClick = { }) {
+                    Icon(
+                        imageVector = Icons.Filled.Share,
+                        contentDescription = "Share News",
+                        tint = Color.Black
+                    )
                 }
-                Icon(imageVector = Icons.Filled.DateRange, contentDescription = null)
-                Text(text = article?.publishedAt ?: "IDK")
+                Icon(
+                    imageVector = Icons.Filled.DateRange,
+                    contentDescription = null,
+                    tint = Color.Black
+                )
+                Text(text = article?.timeDifference ?: "1 Day Ago", color = Color.Black)
             }
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun NewsItemPrev() {
     NewsItem(
         article = Article(
             urlToImage = "https://play-lh.googleusercontent.com/OABfRfKxyvf6PUg_6YBJXvbKSbegFsBKvFDEm5jOA0rC5k1la-OwmnWz6GK55vr3EGA",
             title = "why companies are biuing million-dollar domains and why it's paying off",
-            publishedAt = "3 Days Ago"
-        )
+            publishedAt = "2024-08-26T12:34:45Z"
+        ),
+        onClick = {}
     )
 }

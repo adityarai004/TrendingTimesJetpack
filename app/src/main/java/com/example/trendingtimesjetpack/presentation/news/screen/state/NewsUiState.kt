@@ -21,7 +21,7 @@ data class NewsUiState(
     ),
     val selectedIndex: Int = 0,
     val newsListsState: NewsListState = NewsListState(),
-    val newsMap: Map<Int, PagingData<Article>> = emptyMap(),
+    val downloadedPages: List<Int> = listOf(0),
     val doneLoadingFirstPage: Boolean = false
 )
 
