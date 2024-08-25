@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 data class NewsUiState(
-    val loading: Boolean = false,
     val categoryList: List<String> = listOf(
         "Top-Headlines",
         "Technology",
@@ -21,9 +20,9 @@ data class NewsUiState(
         "Education"
     ),
     val selectedIndex: Int = 0,
-    var newsListsState: NewsListState = NewsListState(),
+    val newsListsState: NewsListState = NewsListState(),
     val newsMap: Map<Int, PagingData<Article>> = emptyMap(),
-    val isLoading: List<Int> = emptyList()
+    val doneLoadingFirstPage: Boolean = false
 )
 
 data class NewsListState(

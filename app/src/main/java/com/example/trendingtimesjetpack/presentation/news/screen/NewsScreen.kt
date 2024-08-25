@@ -5,9 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,7 +13,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -28,18 +25,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.paging.LoadState
-import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.trendingtimesjetpack.R
 import com.example.trendingtimesjetpack.data.dto.news.Article
+import com.example.trendingtimesjetpack.presentation.news.components.NewsItem
 import com.example.trendingtimesjetpack.presentation.news.components.NewsSearchField
 import com.example.trendingtimesjetpack.presentation.news.components.NewsTabView
 import com.example.trendingtimesjetpack.presentation.news.components.NewsTopAppBar
 import com.example.trendingtimesjetpack.presentation.news.screen.state.NewsEvent
 import com.example.trendingtimesjetpack.presentation.news.screen.state.NewsUiState
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
 
@@ -49,7 +44,6 @@ fun NewsRoute(
     onNavigateToSettings: () -> Unit,
     newsViewModel: NewsViewModel = hiltViewModel()
 ) {
-//    val newsList = newsViewModel.newsList.collectAsLazyPagingItems()
     val newsState by newsViewModel.newsUiState.collectAsStateWithLifecycle()
     val newsLists = arrayListOf(
         newsState.newsListsState.topHeadlines.collectAsLazyPagingItems(),
@@ -62,7 +56,6 @@ fun NewsRoute(
         newsState.newsListsState.opinions.collectAsLazyPagingItems(),
         newsState.newsListsState.business.collectAsLazyPagingItems(),
         newsState.newsListsState.education.collectAsLazyPagingItems(),
-
     )
     NewsScreen(onNavigateToBookmarks, onNavigateToSettings, newsLists, newsState,
         onPageChange = {
@@ -74,7 +67,7 @@ fun NewsRoute(
 fun NewsScreen(
     onNavigateToBookmarks: () -> Unit,
     onNavigateToSettings: () -> Unit,
-    newsListOld: ArrayList<LazyPagingItems<Article>>,
+    categoryNews: ArrayList<LazyPagingItems<Article>>,
     newsUiState: NewsUiState,
     onPageChange: (Int) -> Unit
 ) {
@@ -112,24 +105,19 @@ fun NewsScreen(
             )
 
             HorizontalPager(
-                state = pagerState, modifier = Modifier
+                state = pagerState,
+                modifier = Modifier
                     .fillMaxSize()
                     .background(Color.White),
-            ) {
-                if(newsListOld[pagerState.currentPage].itemCount == 0 || !newsUiState.isLoading.contains(pagerState.currentPage)){
+            ) { page ->
+                if (categoryNews[page].itemCount == 0) {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator()
                     }
-                } else{
+                } else {
                     LazyColumn(verticalArrangement = Arrangement.Top) {
-                        items(newsListOld[newsUiState.selectedIndex].itemCount) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(40.dp)
-                            ) {
-                                newsListOld[newsUiState.selectedIndex][it]?.title?.let { it1 -> Text(text = it1, color = Color.Black) }
-                            }
+                        items(categoryNews[newsUiState.selectedIndex].itemCount) {
+                            NewsItem(article = categoryNews[page][it])
                         }
                     }
                 }
@@ -150,33 +138,33 @@ fun NewsScreen(
             }
 
 
-            newsListOld.apply {
+            categoryNews.apply {
                 when {
 //                    loadState.refresh is LoadState.Loading -> {
-////                        item { LoadingView(modifier = Modifier.fillMaxSize()) }
+//                        item { LoadingView(modifier = Modifier.fillMaxSize()) }
 //                    }
 //
 //                    loadState.append is LoadState.Loading -> {
-////                        item { LoadingItem() }
+//                        item { LoadingItem() }
 //                    }
 //
 //                    loadState.refresh is LoadState.Error -> {
-////                        item {
-////                            ErrorItem(
-////                                message = "Something went wrong",
-////                                modifier = Modifier.fillMaxSize(),
-////                                onClickRetry = { retry() }
-////                            )
-////                        }
+//                        item {
+//                            ErrorItem(
+//                                message = "Something went wrong",
+//                                modifier = Modifier.fillMaxSize(),
+//                                onClickRetry = { retry() }
+//                            )
+//                        }
 //                    }
 //
 //                    loadState.append is LoadState.Error -> {
-////                        item {
-////                            ErrorItem(
-////                                message = "Something went wrong",
-////                                onClickRetry = { retry() }
-////                            )
-////                        }
+//                        item {
+//                            ErrorItem(
+//                                message = "Something went wrong",
+//                                onClickRetry = { retry() }
+//                            )
+//                        }
 //                    }
 //
 //                    else -> {
