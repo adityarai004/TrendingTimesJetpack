@@ -78,6 +78,7 @@ fun NewsScreen(
             Log.d("TAG", "Scrolled to ${pagerState.currentPage}")
             onPageChange(pagerState.currentPage)
         }
+
     }
 
     Scaffold(
